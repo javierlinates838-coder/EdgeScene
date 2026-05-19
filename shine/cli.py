@@ -37,11 +37,25 @@ def _comma_split(value: str) -> List[str]:
     return [part.strip() for part in value.split(",") if part.strip()]
 
 
+def _sanitize_api_key(raw_value: str) -> str:
+    value = raw_value.strip()
+    if not value:
+        return ""
+    if " " not in value and "\t" not in value and "\n" not in value:
+        return value
+
+    tokens = [token.strip() for token in value.replace("\n", " ").split(" ") if token.strip()]
+    for token in tokens:
+        if token.startswith("toa_"):
+            return token
+    return tokens[0] if tokens else ""
+
+
 def main() -> None:
     parser = _build_parser()
     args = parser.parse_args()
 
-    api_key = args.api_key or os.getenv("ODDS_API_KEY")
+    api_key = _sanitize_api_key(args.api_key or os.getenv("ODDS_API_KEY", ""))
     if not api_key:
         raise SystemExit("Missing API key: set ODDS_API_KEY or pass --api-key.")
 
