@@ -1,0 +1,258 @@
+:root {
+  color-scheme: dark;
+  --bg: #0a0f1e;
+  --panel: #121b34;
+  --panel-soft: #182446;
+  --muted: #9fb0d9;
+  --text: #f4f8ff;
+  --accent: #59d1ff;
+  --good: #25d17f;
+  --warn: #ffca57;
+  --bad: #ff6b6b;
+  --border: #2a3a66;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: radial-gradient(circle at top, #182446, var(--bg) 52%);
+  color: var(--text);
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: rgba(10, 15, 30, 0.6);
+  backdrop-filter: blur(6px);
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+.subtitle,
+.muted {
+  color: var(--muted);
+  margin: 0.3rem 0 0;
+}
+
+.badge {
+  background: #1e2f5a;
+  color: var(--accent);
+  border: 1px solid #2f4b84;
+  border-radius: 999px;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.panel {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(18, 27, 52, 0.86);
+  padding: 1rem;
+}
+
+.controls form {
+  display: grid;
+  gap: 0.8rem;
+}
+
+label,
+legend {
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+
+input,
+select,
+button {
+  width: 100%;
+  margin-top: 0.35rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--panel-soft);
+  color: var(--text);
+  padding: 0.6rem 0.65rem;
+  font-size: 0.92rem;
+}
+
+button {
+  cursor: pointer;
+  background: linear-gradient(135deg, #2563eb, #0ea5e9);
+  border: none;
+  font-weight: 700;
+}
+
+button:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+fieldset {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.5rem 0.6rem 0.7rem;
+}
+
+.sports-grid {
+  margin-top: 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+}
+
+.sport-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.82rem;
+  color: var(--text);
+}
+
+.sport-toggle input {
+  margin: 0;
+  width: 1rem;
+  height: 1rem;
+}
+
+.row {
+  display: grid;
+  gap: 0.7rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+.results-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.status {
+  min-height: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--muted);
+}
+
+.status.error {
+  color: var(--bad);
+}
+
+.parlays {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.parlay-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(20, 31, 58, 0.88);
+  padding: 0.8rem;
+}
+
+.parlay-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.tier {
+  font-size: 0.78rem;
+  font-weight: 800;
+  background: #273d74;
+  border: 1px solid #35539a;
+  color: #9ec5ff;
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+}
+
+.tier.S {
+  color: var(--good);
+  border-color: #1a8d5b;
+  background: #123827;
+}
+
+.tier.A {
+  color: #4ff0d9;
+}
+
+.headline {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.metrics {
+  margin-top: 0.55rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem;
+}
+
+.metric {
+  background: #1b2b52;
+  border: 1px solid #2e4883;
+  border-radius: 8px;
+  padding: 0.4rem 0.5rem;
+}
+
+.metric .label {
+  display: block;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.metric .value {
+  font-weight: 700;
+}
+
+.legs {
+  margin-top: 0.7rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.leg {
+  border: 1px solid #2d467d;
+  border-radius: 8px;
+  padding: 0.45rem 0.55rem;
+  background: #16274d;
+}
+
+.leg-main {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+  font-size: 0.88rem;
+}
+
+.leg-sub {
+  margin-top: 0.3rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+@media (max-width: 1000px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
