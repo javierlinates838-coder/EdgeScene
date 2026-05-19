@@ -88,6 +88,7 @@ def normalize_odds_response(payload: list[dict[str, Any]], sport_key: str | None
 
 def normalize_event(item: dict[str, Any], sport_key: str | None = None) -> MoneylineEvent | None:
     prices_by_participant: dict[str, list[float]] = defaultdict(list)
+    decimal_by_participant: dict[str, list[float]] = defaultdict(list)
     implied_by_participant: dict[str, list[float]] = defaultdict(list)
     no_vig_by_participant: dict[str, list[float]] = defaultdict(list)
 
@@ -112,6 +113,7 @@ def normalize_event(item: dict[str, Any], sport_key: str | None = None) -> Money
         no_vig_market = no_vig_probabilities(implied_market)
         for participant, price in american_prices.items():
             prices_by_participant[participant].append(price)
+            decimal_by_participant[participant].append(american_to_decimal(price))
             implied_by_participant[participant].append(implied_market[participant])
             no_vig_by_participant[participant].append(no_vig_market[participant])
 
@@ -124,7 +126,7 @@ def normalize_event(item: dict[str, Any], sport_key: str | None = None) -> Money
             OutcomePrice(
                 participant=participant,
                 average_american_odds=average_american,
-                average_decimal_odds=american_to_decimal(average_american),
+                average_decimal_odds=_average(decimal_by_participant[participant]),
                 implied_probability=_average(implied_by_participant[participant]),
                 no_vig_probability=_average(no_vig_by_participant[participant]),
                 bookmaker_count=len(prices),

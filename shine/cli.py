@@ -17,7 +17,12 @@ def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
 
-    intelligence = IntelligenceLayer.from_file(args.intelligence_file) if args.intelligence_file else IntelligenceLayer()
+    if args.intelligence_file:
+        intelligence = IntelligenceLayer.from_file(args.intelligence_file)
+    elif args.sample:
+        intelligence = sample_intelligence()
+    else:
+        intelligence = IntelligenceLayer()
 
     try:
         if args.list_sports:
@@ -152,6 +157,38 @@ def sample_events() -> list[Any]:
                 [("Elite Striker", 120), ("Control Grappler", -140)],
             ),
         ]
+    )
+
+
+def sample_intelligence() -> IntelligenceLayer:
+    return IntelligenceLayer.from_dict(
+        {
+            "entities": {
+                "Boston Celtics": {
+                    "pressure_rating": 0.85,
+                    "host_region_advantage": True,
+                    "style_tags": ["pace_up", "home_court"],
+                },
+                "Kansas City Chiefs": {
+                    "pressure_rating": 0.9,
+                    "host_region_advantage": True,
+                    "style_tags": ["shootout"],
+                },
+                "Real Madrid": {
+                    "pressure_rating": 1.0,
+                    "host_region_advantage": True,
+                    "style_tags": ["possession"],
+                },
+                "FaZe Clan": {
+                    "pressure_rating": 0.75,
+                    "style_tags": ["map_pool_edge"],
+                },
+                "Elite Striker": {
+                    "pressure_rating": 0.65,
+                    "style_tags": ["striker", "cardio_edge"],
+                },
+            }
+        }
     )
 
 
