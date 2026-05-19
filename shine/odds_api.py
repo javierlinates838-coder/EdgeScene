@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from typing import Dict, Iterable, List, Optional
+from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import urlopen
 
@@ -11,6 +12,12 @@ from .models import EventOdds, TeamOdds
 
 
 DEFAULT_BASE_URL = "https://api.the-odds-api.com/v4"
+
+
+class OddsApiError(RuntimeError):
+    def __init__(self, message: str, status_code: Optional[int] = None) -> None:
+        super().__init__(message)
+        self.status_code = status_code
 
 
 @dataclass
@@ -43,11 +50,22 @@ class OddsApiClient:
 
     def _get_json(self, path: str, query: Dict[str, str]) -> List[dict]:
         url = f"{self.base_url}{path}?{urlencode(query)}"
-        with urlopen(url, timeout=30) as response:
-            payload = response.read().decode("utf-8")
-        data = json.loads(payload)
+        try:
+            with urlopen(url, timeout=30) as response:
+                payload = response.read().decode("utf-8")
+        except HTTPError as error:
+            body = error.read().decode("utf-8", errors="ignore")
+            message = self._extract_error_message(body) or error.reason or "request failed"
+            raise OddsApiError(str(message), status_code=error.code) from error
+        except URLError as error:
+            raise OddsApiError(f"network error: {error.reason}") from error
+
+        try:
+            data = json.loads(payload)
+        except json.JSONDecodeError as error:
+            raise OddsApiError("invalid JSON returned by TheOddsAPI") from error
         if not isinstance(data, list):
-            raise ValueError("Unexpected TheOddsAPI payload.")
+            raise OddsApiError("unexpected payload format returned by TheOddsAPI")
         return data
 
     def _extract_events(self, payload: List[dict], fallback_sport_key: str) -> List[EventOdds]:
@@ -100,3 +118,18 @@ class OddsApiClient:
                     if all(isinstance(out.get("price"), int) for out in outcomes):
                         return str(bookmaker.get("title", "unknown")), outcomes
         return None
+
+    @staticmethod
+    def _extract_error_message(raw_body: str) -> Optional[str]:
+        if not raw_body:
+            return None
+        try:
+            parsed = json.loads(raw_body)
+        except json.JSONDecodeError:
+            return raw_body.strip() or None
+        if isinstance(parsed, dict):
+            for key in ("message", "error", "detail"):
+                value = parsed.get(key)
+                if isinstance(value, str) and value.strip():
+                    return value.strip()
+        return raw_body.strip() or None
