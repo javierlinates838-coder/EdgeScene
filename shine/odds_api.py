@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
-from typing import Dict, Iterable, List, Optional
+from typing import Any, Dict, Iterable, List, Optional
+from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import urlopen
 
@@ -11,6 +12,12 @@ from .models import EventOdds, TeamOdds
 
 
 DEFAULT_BASE_URL = "https://api.the-odds-api.com/v4"
+
+
+class OddsApiError(RuntimeError):
+    def __init__(self, message: str, status_code: Optional[int] = None) -> None:
+        super().__init__(message)
+        self.status_code = status_code
 
 
 @dataclass
@@ -43,11 +50,22 @@ class OddsApiClient:
 
     def _get_json(self, path: str, query: Dict[str, str]) -> List[dict]:
         url = f"{self.base_url}{path}?{urlencode(query)}"
-        with urlopen(url, timeout=30) as response:
-            payload = response.read().decode("utf-8")
-        data = json.loads(payload)
+        try:
+            with urlopen(url, timeout=30) as response:
+                payload = response.read().decode("utf-8")
+        except HTTPError as error:
+            body = error.read().decode("utf-8", errors="ignore")
+            message = self._extract_error_message(body) or error.reason or "request failed"
+            raise OddsApiError(str(message), status_code=error.code) from error
+        except URLError as error:
+            raise OddsApiError(f"network error: {error.reason}") from error
+
+        try:
+            data = json.loads(payload)
+        except json.JSONDecodeError as error:
+            raise OddsApiError("invalid JSON returned by TheOddsAPI") from error
         if not isinstance(data, list):
-            raise ValueError("Unexpected TheOddsAPI payload.")
+            raise OddsApiError("unexpected payload format returned by TheOddsAPI")
         return data
 
     def _extract_events(self, payload: List[dict], fallback_sport_key: str) -> List[EventOdds]:
@@ -65,7 +83,10 @@ class OddsApiClient:
             if len(outcomes) < 2:
                 continue
 
-            implied = [american_to_implied_probability(o["price"]) for o in outcomes]
+            try:
+                implied = [american_to_implied_probability(o["price"]) for o in outcomes]
+            except ValueError:
+                continue
             true_probabilities = remove_vig(implied)
             teams = [
                 TeamOdds(
@@ -77,11 +98,15 @@ class OddsApiClient:
                 for outcome, implied_prob, true_prob in zip(outcomes, implied, true_probabilities)
             ]
 
+            event_id = item.get("id")
+            if not isinstance(event_id, str) or not event_id.strip():
+                continue
+
             events.append(
                 EventOdds(
                     sport_key=str(item.get("sport_key", fallback_sport_key)),
                     sport_title=str(item.get("sport_title", fallback_sport_key)),
-                    event_id=str(item["id"]),
+                    event_id=event_id,
                     commence_time=str(item.get("commence_time", "")),
                     home_team=str(item.get("home_team", "")),
                     away_team=str(item.get("away_team", "")),
@@ -96,7 +121,48 @@ class OddsApiClient:
         for bookmaker in bookmakers:
             for market in bookmaker.get("markets", []):
                 if market.get("key") == "h2h":
-                    outcomes = market.get("outcomes", [])
-                    if all(isinstance(out.get("price"), int) for out in outcomes):
-                        return str(bookmaker.get("title", "unknown")), outcomes
+                    raw_outcomes = market.get("outcomes", [])
+                    normalized_outcomes: List[dict] = []
+                    for outcome in raw_outcomes:
+                        price = OddsApiClient._normalize_american_price(outcome.get("price"))
+                        name = outcome.get("name")
+                        if price is None or not isinstance(name, str) or not name.strip():
+                            continue
+                        normalized_outcomes.append({"name": name.strip(), "price": price})
+                    if len(normalized_outcomes) >= 2:
+                        return str(bookmaker.get("title", "unknown")), normalized_outcomes
         return None
+
+    @staticmethod
+    def _normalize_american_price(value: Any) -> Optional[int]:
+        if isinstance(value, int):
+            return value if value != 0 else None
+        if isinstance(value, float):
+            as_int = int(value)
+            return as_int if as_int != 0 else None
+        if isinstance(value, str):
+            text = value.strip()
+            if not text:
+                return None
+            try:
+                as_float = float(text)
+            except ValueError:
+                return None
+            as_int = int(as_float)
+            return as_int if as_int != 0 else None
+        return None
+
+    @staticmethod
+    def _extract_error_message(raw_body: str) -> Optional[str]:
+        if not raw_body:
+            return None
+        try:
+            parsed = json.loads(raw_body)
+        except json.JSONDecodeError:
+            return raw_body.strip() or None
+        if isinstance(parsed, dict):
+            for key in ("message", "error", "detail"):
+                value = parsed.get(key)
+                if isinstance(value, str) and value.strip():
+                    return value.strip()
+        return raw_body.strip() or None

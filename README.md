@@ -16,21 +16,48 @@ Shine is an AI-powered moneyline parlay engine that ingests live odds from TheOd
 ## Quick start
 
 1. Ensure Python 3.11+ is installed.
-2. Export your API key:
+2. Install dependencies:
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+3. Export your API key:
 
 ```bash
 export ODDS_API_KEY="your_theoddsapi_key"
 ```
 
-3. Run the CLI:
+4. Run the CLI:
 
 ```bash
-python -m shine.cli \
+python3 -m shine.cli \
   --sports basketball_nba,americanfootball_nfl,soccer_epl,baseball_mlb,icehockey_nhl,esports_cs2,esports_lol,mma_mixed_martial_arts \
   --regions us,eu,uk \
   --max-legs 3 \
   --max-parlays 20
 ```
+
+## Full web app
+
+Run the full Shine website locally:
+
+```bash
+python3 -m shine.web --host 0.0.0.0 --port 8000
+```
+
+Then open:
+
+```text
+http://localhost:8000
+```
+
+The web app includes:
+
+- Live TheOddsAPI odds pull + engine execution.
+- Multi-sport selection and region/bookmaker controls.
+- EV-tiered ranked parlay dashboard with correlation and edge metrics.
+- Leg-level breakdown of adjusted probabilities and context multipliers.
 
 ## CLI options
 

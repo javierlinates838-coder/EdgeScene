@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shine v4 | Moneyline Parlay Engine</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>Shine v4</h1>
+        <p class="subtitle">AI-powered moneyline EV parlay engine</p>
+      </div>
+      <div class="badge">Live TheOddsAPI + Correlation EV</div>
+    </header>
+
+    <main class="layout">
+      <section class="panel controls">
+        <h2>Parlay Builder</h2>
+        <p class="muted">Configure inputs and run the full Shine engine.</p>
+
+        <form id="shine-form">
+          <label>
+            TheOddsAPI Key
+            <input id="api_key" name="api_key" type="password" autocomplete="off" placeholder="toa_live_..." />
+          </label>
+
+          <fieldset>
+            <legend>Sports</legend>
+            <div id="sports-grid" class="sports-grid"></div>
+          </fieldset>
+
+          <label>
+            Regions
+            <input id="regions" name="regions" type="text" value="us,eu,uk" />
+          </label>
+
+          <label>
+            Bookmakers (optional)
+            <input id="bookmakers" name="bookmakers" type="text" placeholder="draftkings,fanduel" />
+          </label>
+
+          <div class="row">
+            <label>
+              Max Legs
+              <input id="max_legs" name="max_legs" type="number" min="2" max="8" value="3" />
+            </label>
+            <label>
+              Max Parlays
+              <input id="max_parlays" name="max_parlays" type="number" min="1" max="250" value="20" />
+            </label>
+          </div>
+
+          <label>
+            Minimum Tier
+            <select id="min_tier" name="min_tier">
+              <option value="S">S</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+              <option value="D" selected>D</option>
+            </select>
+          </label>
+
+          <button id="run-btn" type="submit">Run Shine</button>
+        </form>
+      </section>
+
+      <section class="panel results">
+        <div class="results-head">
+          <h2>Ranked Parlays</h2>
+          <p id="summary" class="muted">Ready.</p>
+        </div>
+        <div id="status" class="status"></div>
+        <div id="parlays" class="parlays"></div>
+      </section>
+    </main>
+
+    <template id="parlay-template">
+      <article class="parlay-card">
+        <header class="parlay-header">
+          <div class="tier"></div>
+          <div class="headline"></div>
+        </header>
+        <div class="metrics"></div>
+        <div class="legs"></div>
+      </article>
+    </template>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>

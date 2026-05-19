@@ -5,7 +5,7 @@ import os
 from typing import List
 
 from .engine import ShineEngine, ShineEngineConfig
-from .odds_api import OddsApiClient
+from .odds_api import OddsApiClient, OddsApiError
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -37,11 +37,25 @@ def _comma_split(value: str) -> List[str]:
     return [part.strip() for part in value.split(",") if part.strip()]
 
 
+def _sanitize_api_key(raw_value: str) -> str:
+    value = raw_value.strip()
+    if not value:
+        return ""
+    if " " not in value and "\t" not in value and "\n" not in value:
+        return value
+
+    tokens = [token.strip() for token in value.replace("\n", " ").split(" ") if token.strip()]
+    for token in tokens:
+        if token.startswith("toa_"):
+            return token
+    return tokens[0] if tokens else ""
+
+
 def main() -> None:
     parser = _build_parser()
     args = parser.parse_args()
 
-    api_key = args.api_key or os.getenv("ODDS_API_KEY")
+    api_key = _sanitize_api_key(args.api_key or os.getenv("ODDS_API_KEY", ""))
     if not api_key:
         raise SystemExit("Missing API key: set ODDS_API_KEY or pass --api-key.")
 
@@ -50,11 +64,15 @@ def main() -> None:
         raise SystemExit("At least one sport key is required.")
 
     client = OddsApiClient(api_key=api_key)
-    events = client.fetch_moneyline_odds(
-        sports=sports,
-        regions=args.regions,
-        bookmakers=args.bookmakers,
-    )
+    try:
+        events = client.fetch_moneyline_odds(
+            sports=sports,
+            regions=args.regions,
+            bookmakers=args.bookmakers,
+        )
+    except OddsApiError as error:
+        status = f"{error.status_code}" if error.status_code is not None else "n/a"
+        raise SystemExit(f"TheOddsAPI request failed (status {status}): {error}") from error
     if not events:
         raise SystemExit("No eligible moneyline events returned from TheOddsAPI.")
 
