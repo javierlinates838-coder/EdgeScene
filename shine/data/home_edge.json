@@ -1,0 +1,19 @@
+{
+  "comment": "Baseline home-field/court advantage as an additive probability bump for the home team (after vig removal). Values are conservative averages.",
+  "edges": {
+    "basketball_nba":         0.040,
+    "basketball_wnba":        0.045,
+    "basketball_ncaab":       0.060,
+    "americanfootball_nfl":   0.025,
+    "americanfootball_ncaaf": 0.055,
+    "icehockey_nhl":          0.030,
+    "baseball_mlb":           0.020,
+    "soccer":                 0.060,
+    "mma_mixed_martial_arts": 0.005,
+    "boxing_boxing":          0.005,
+    "esports_counterstrike":  0.000,
+    "esports_lol":            0.000,
+    "esports_valorant":       0.000,
+    "esports_dota2":          0.000
+  }
+}

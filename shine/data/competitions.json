@@ -1,0 +1,36 @@
+{
+  "comment": "Maps TheOddsAPI sport_key (or sport_title substring) -> stage metadata. 'stage_boost' is applied as a confidence multiplier in the intelligence layer.",
+  "stages": {
+    "basketball_nba": {
+      "regular": {"keywords": ["regular"], "stage_boost": 1.00},
+      "playoffs": {"keywords": ["playoff", "play-in", "finals"], "stage_boost": 1.06}
+    },
+    "americanfootball_nfl": {
+      "regular": {"keywords": ["regular"], "stage_boost": 1.00},
+      "playoffs": {"keywords": ["wild card", "divisional", "conference", "super bowl", "playoff"], "stage_boost": 1.07}
+    },
+    "icehockey_nhl": {
+      "regular": {"keywords": ["regular"], "stage_boost": 1.00},
+      "playoffs": {"keywords": ["stanley cup", "playoff"], "stage_boost": 1.05}
+    },
+    "baseball_mlb": {
+      "regular": {"keywords": ["regular"], "stage_boost": 1.00},
+      "playoffs": {"keywords": ["world series", "alcs", "nlcs", "alds", "nlds", "wild card", "playoff"], "stage_boost": 1.04}
+    },
+    "soccer_uefa_champs_league": {
+      "knockout": {"keywords": ["knockout", "round of", "quarter", "semi", "final"], "stage_boost": 1.06}
+    },
+    "esports_counterstrike": {
+      "major": {"keywords": ["major", "iem katowice", "iem cologne", "blast world final"], "stage_boost": 1.08}
+    },
+    "esports_lol": {
+      "worlds": {"keywords": ["worlds", "world championship", "msi"], "stage_boost": 1.08}
+    },
+    "esports_valorant": {
+      "champions": {"keywords": ["champions", "masters"], "stage_boost": 1.07}
+    },
+    "mma_mixed_martial_arts": {
+      "ppv": {"keywords": ["ufc 3", "ufc 2", "ppv", "championship"], "stage_boost": 1.05}
+    }
+  }
+}

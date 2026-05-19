@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shine"
+version = "0.4.0"
+description = "Shine v4 — AI-powered moneyline parlay engine"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Shine" }]
+dependencies = [
+  "requests>=2.31.0",
+  "python-dotenv>=1.0.1",
+  "click>=8.1.7",
+  "rich>=13.7.1",
+  "pydantic>=2.7.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+shine = "shine.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["shine*"]
+
+[tool.setuptools.package-data]
+shine = ["data/*.json"]

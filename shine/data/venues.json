@@ -1,0 +1,37 @@
+{
+  "comment": "Home venue metadata for environment/travel adjustments. Latitude, longitude, altitude_m, timezone, and country.",
+  "venues": {
+    "los angeles lakers":    {"lat": 34.0430, "lon": -118.2673, "alt_m": 89,   "tz": "America/Los_Angeles", "country": "USA"},
+    "los angeles clippers":  {"lat": 34.0430, "lon": -118.2673, "alt_m": 89,   "tz": "America/Los_Angeles", "country": "USA"},
+    "golden state warriors": {"lat": 37.7680, "lon": -122.3877, "alt_m": 3,    "tz": "America/Los_Angeles", "country": "USA"},
+    "denver nuggets":        {"lat": 39.7487, "lon": -105.0078, "alt_m": 1610, "tz": "America/Denver",      "country": "USA"},
+    "boston celtics":        {"lat": 42.3662, "lon": -71.0621,  "alt_m": 6,    "tz": "America/New_York",    "country": "USA"},
+    "miami heat":            {"lat": 25.7814, "lon": -80.1870,  "alt_m": 2,    "tz": "America/New_York",    "country": "USA"},
+    "new york knicks":       {"lat": 40.7505, "lon": -73.9934,  "alt_m": 10,   "tz": "America/New_York",    "country": "USA"},
+    "philadelphia 76ers":    {"lat": 39.9012, "lon": -75.1720,  "alt_m": 12,   "tz": "America/New_York",    "country": "USA"},
+    "milwaukee bucks":       {"lat": 43.0451, "lon": -87.9173,  "alt_m": 187,  "tz": "America/Chicago",     "country": "USA"},
+    "phoenix suns":          {"lat": 33.4458, "lon": -112.0712, "alt_m": 331,  "tz": "America/Phoenix",     "country": "USA"},
+
+    "kansas city chiefs":    {"lat": 39.0489, "lon": -94.4839,  "alt_m": 232,  "tz": "America/Chicago",     "country": "USA"},
+    "san francisco 49ers":   {"lat": 37.4030, "lon": -121.9700, "alt_m": 8,    "tz": "America/Los_Angeles", "country": "USA"},
+    "buffalo bills":         {"lat": 42.7738, "lon": -78.7870,  "alt_m": 191,  "tz": "America/New_York",    "country": "USA"},
+    "dallas cowboys":        {"lat": 32.7473, "lon": -97.0945,  "alt_m": 188,  "tz": "America/Chicago",     "country": "USA"},
+    "denver broncos":        {"lat": 39.7439, "lon": -105.0201, "alt_m": 1610, "tz": "America/Denver",      "country": "USA"},
+    "green bay packers":     {"lat": 44.5013, "lon": -88.0622,  "alt_m": 196,  "tz": "America/Chicago",     "country": "USA"},
+
+    "real madrid":           {"lat": 40.4531, "lon": -3.6883,   "alt_m": 660,  "tz": "Europe/Madrid",       "country": "ESP"},
+    "barcelona":             {"lat": 41.3809, "lon": 2.1228,    "alt_m": 12,   "tz": "Europe/Madrid",       "country": "ESP"},
+    "atletico madrid":       {"lat": 40.4362, "lon": -3.5994,   "alt_m": 600,  "tz": "Europe/Madrid",       "country": "ESP"},
+    "manchester city":       {"lat": 53.4831, "lon": -2.2004,   "alt_m": 38,   "tz": "Europe/London",       "country": "GBR"},
+    "liverpool":             {"lat": 53.4308, "lon": -2.9608,   "alt_m": 35,   "tz": "Europe/London",       "country": "GBR"},
+    "arsenal":               {"lat": 51.5549, "lon": -0.1084,   "alt_m": 25,   "tz": "Europe/London",       "country": "GBR"},
+    "bayern munich":         {"lat": 48.2188, "lon": 11.6247,   "alt_m": 503,  "tz": "Europe/Berlin",       "country": "DEU"},
+    "paris saint-germain":   {"lat": 48.8414, "lon": 2.2530,    "alt_m": 35,   "tz": "Europe/Paris",        "country": "FRA"}
+  },
+  "neutral_hosts": {
+    "lol_worlds_2024":  {"city": "London",       "lat": 51.5074, "lon": -0.1278,  "tz": "Europe/London",  "favored_region": "KOR"},
+    "cs_major_2024":    {"city": "Copenhagen",   "lat": 55.6761, "lon": 12.5683,  "tz": "Europe/Copenhagen", "favored_region": "EU"},
+    "val_champions":    {"city": "Seoul",        "lat": 37.5665, "lon": 126.9780, "tz": "Asia/Seoul",     "favored_region": "KOR"},
+    "world_cup_2026":   {"city": "Mexico City",  "lat": 19.4326, "lon": -99.1332, "tz": "America/Mexico_City", "favored_region": "CONCACAF"}
+  }
+}

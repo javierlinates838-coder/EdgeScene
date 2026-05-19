@@ -1,0 +1,64 @@
+{
+  "comment": "Big-stage pressure performance ratings. >1.0 = team historically RISES under pressure, <1.0 = team historically CHOKES. Defaults to 1.0 if missing. Keys are normalized team names (lower-case, no punctuation). Players are mixed in for combat sports.",
+  "ratings": {
+    "boston celtics":        1.04,
+    "los angeles lakers":    1.05,
+    "golden state warriors": 1.07,
+    "miami heat":            1.06,
+    "denver nuggets":        1.03,
+    "milwaukee bucks":       0.98,
+    "philadelphia 76ers":    0.94,
+    "los angeles clippers":  0.93,
+    "phoenix suns":          0.95,
+
+    "kansas city chiefs":    1.07,
+    "san francisco 49ers":   1.02,
+    "buffalo bills":         0.95,
+    "dallas cowboys":        0.92,
+    "baltimore ravens":      1.02,
+    "philadelphia eagles":   1.01,
+    "green bay packers":     1.03,
+
+    "real madrid":           1.10,
+    "manchester city":       1.05,
+    "bayern munich":         1.04,
+    "liverpool":             1.03,
+    "barcelona":             0.99,
+    "paris saint-germain":   0.92,
+    "atletico madrid":       1.02,
+    "inter milan":           1.01,
+    "ac milan":              1.00,
+    "arsenal":               0.97,
+
+    "natus vincere":         1.04,
+    "g2 esports":            1.02,
+    "faze clan":             1.03,
+    "vitality":              1.04,
+    "spirit":                1.03,
+
+    "t1":                    1.08,
+    "gen.g":                 1.02,
+    "jdg":                   1.03,
+    "blg":                   1.02,
+    "g2":                    1.01,
+    "fnatic":                0.99,
+
+    "loud":                  1.03,
+    "fnatic val":            1.02,
+    "drx":                   1.01,
+    "paper rex":             1.02,
+    "sentinels":             0.98,
+
+    "vegas golden knights":  1.04,
+    "colorado avalanche":    1.03,
+    "tampa bay lightning":   1.05,
+    "florida panthers":      1.02,
+    "edmonton oilers":       0.97,
+    "toronto maple leafs":   0.89,
+
+    "houston astros":        1.04,
+    "los angeles dodgers":   0.96,
+    "new york yankees":      0.97,
+    "atlanta braves":        1.02
+  }
+}
